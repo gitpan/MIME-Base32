@@ -8,7 +8,7 @@
 
 BEGIN { $| = 1; print "1..10\n"; }
 END {print "not ok 1\n" unless $loaded;}
-use MIME::Base32 qw( RFC-3548 );
+use MIME::Base32;
 $loaded = 1;
 print "ok 1\n";
 
@@ -34,7 +34,7 @@ our $GlobalEncodedString;
 our $GlobalDecodedString;
 
 $TestLevel++;
-$TestLabel = 'Encode (RFC-3548 compliant)';
+$TestLabel = 'Encode';
 TestIt(
 	eval{
 		$GlobalEncodedString = MIME::Base32::encode( $GlobalTestString );
@@ -43,7 +43,7 @@ TestIt(
 );
 
 $TestLevel++;
-$TestLabel = 'Decode (RFC-3548 compliant)';
+$TestLabel = 'Decode';
 TestIt(
 	eval{
 		$GlobalDecodedString = MIME::Base32::decode( $GlobalEncodedString );

@@ -4,7 +4,10 @@ NAME
 
 SYNOPSIS
 
-      use MIME::Base32;
+      # RFC forces the [A-Z2-7] RFC-3548 compliant encoding 
+      # default encoding [0-9A-V] is for backward compatibility with pre v1.0
+      use MIME::Base32 qw( RFC ); 
+  
       $encoded = MIME::Base32::encode($text_or_binary_data);
       $decoded = MIME::Base32::decode($encoded);
                                          

@@ -4,17 +4,73 @@ require 5.005_62;
 use strict;
 use warnings;
 
-our $VERSION = '0.02'; # $Id: Base32.pm_rev 1.2 2003/05/01 22:00:01 root Exp root $
+use vars qw( $VERSION );
+
+	$VERSION = '1.01'; # $Id: Base32.pm_rev 1.5 2003/12/11 13:21:18 root Exp root $
 
 
-# Preloaded methods go here.
+sub import
+{
+	my(		$pkg, $arg		)=@_;
+	if( defined($arg) && $arg =~ /rfc|3548/i )
+	{
+		*encode = \&encode_rfc3548;
+		*decode = \&decode_rfc3548;
+	}
+	else
+	{
+		*encode = \&encode_09AV;
+		*decode = \&decode_09AV;
+	}
+}
 
-sub encode{			
+sub encode_rfc3548{			
 
 	# base32:
 	#
 	#  modified base64 algorithm with
-	#  32 characters set:  0 - 9  A - V
+	#  32 characters set:  A - Z 2 - 7 compliant with: RFC-3548
+	#
+	
+	
+	$_ = shift @_;
+	my( $buffer, $l, $e );
+
+	$_=unpack('B*', $_);
+	s/(.....)/000$1/g;
+	$l=length;
+	if ($l & 7)
+	{
+		$e = substr($_, $l & ~7);
+		$_ = substr($_, 0, $l & ~7);
+		$_ .= "000$e" . '0' x (5 - length $e);
+	}
+	$_=pack('B*', $_);
+	tr|\0-\37|A-Z2-7|;
+	$_;
+}
+
+sub decode_rfc3548{
+        $_ = shift;
+        my( $l );
+		
+        tr|A-Z2-7|\0-\37|;
+        $_=unpack('B*', $_);
+        s/000(.....)/$1/g;
+        $l=length;
+					
+        # pouzije pouze platnou delku retezce
+        $_=substr($_, 0, $l & ~7) if $l & 7;
+					
+        $_=pack('B*', $_);
+}
+
+sub encode_09AV{			
+
+	# base32:
+	#
+	#  modified base64 algorithm with
+	#  32 characters set:  [0-9A-V] pre 1.00 backward compatibility
 	#
 	
 	
@@ -35,7 +91,7 @@ sub encode{
 	$_;
 }
 
-sub decode{
+sub decode_09AV{
         $_ = shift;
         my( $l );
 		
@@ -60,7 +116,10 @@ MIME::Base32 - Base32 encoder / decoder
 
 =head1 SYNOPSIS
 
-  use MIME::Base32;
+  # RFC forces the [A-Z2-7] RFC-3548 compliant encoding 
+  # default encoding [0-9A-V] is for backward compatibility with pre v1.0
+  use MIME::Base32 qw( RFC ); 
+  
   $encoded = MIME::Base32::encode($text_or_binary_data);
   $decoded = MIME::Base32::decode($encoded);
 					 
