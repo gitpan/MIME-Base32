@@ -6,7 +6,7 @@ use warnings;
 
 use vars qw( $VERSION );
 
-	$VERSION = '1.01'; # $Id: Base32.pm_rev 1.5 2003/12/11 13:21:18 root Exp root $
+	$VERSION = '1.02'; # minor changes : added COPYRIGHT according to community request; test.pl - extended test string
 
 
 sub import
@@ -137,6 +137,19 @@ ALLWAYS NOTHING
 
 Daniel Peder, sponsored by Infoset s.r.o., Czech Republic 
 <Daniel.Peder@InfoSet.COM> http://www.infoset.com
+
+=head1 COPYRIGHT
+
+Copyright (c) 2003-2010 Daniel Peder.  All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+=head1 NOTE
+
+Version 1.02 provides minor changes only: 
+- added COPYRIGHT according to FEDORA & DEBIAN community requests
+- test.pl - extended test string (just for sure ;)
 
 =head1 SEE ALSO
 

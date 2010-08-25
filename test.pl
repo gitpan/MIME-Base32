@@ -29,7 +29,7 @@ sub TestIt($) { shift() ? TestOK : TestKO }
 sub TestMSG($) { printf "\t%s%s: '%s'\n", $TestLabelPrefix, $TestLabel, shift() }
 sub TestMSGf(@) { printf "\t%s%s: ".shift()."\n", $TestLabelPrefix, $TestLabel, @_ }
 
-our $GlobalTestString = 'Hallo world, whats new?';
+our $GlobalTestString = 'Hallo world, whats new? 1234567890 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ .:!%$@#*()[]{}<>"/ ';
 our $GlobalEncodedString;
 our $GlobalDecodedString;
 
